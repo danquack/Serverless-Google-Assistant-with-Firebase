@@ -1,0 +1,5 @@
+---
+ - metrics:
+    ## Add Metrics and synonyms, then run `npm run-script update-entities`
+    - metric1:
+        - synonym

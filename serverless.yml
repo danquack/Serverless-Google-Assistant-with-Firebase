@@ -1,0 +1,19 @@
+service: facts
+
+provider:
+  name: google
+  credentials: credentials.json
+  project: ${env:PROJECT_ID}
+  region: us-central1
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-google-cloudfunctions
+
+functions:
+  google-assistant:
+    handler: index
+    events:
+      - http: path
+    environment:
+      GOOGLE_FACTS_TABLENAME: ${env:GOOGLE_FACTS_TABLENAME, 'Facts'}
