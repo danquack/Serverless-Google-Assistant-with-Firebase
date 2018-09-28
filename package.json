@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "deploy": "sls deploy",
-    "update-entities": "cd deployment && ts-node update_entities.ts && cd ../",
+    "update-entities": "cd deployment && ts-node update_entities.ts update && cd ../",
     "tests": "cd tests && mocha -r ts-node/register *.spec.ts && cd ../"
   },
   "author": "Daniel Quackenbush",

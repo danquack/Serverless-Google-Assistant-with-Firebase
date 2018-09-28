@@ -125,4 +125,7 @@ async function loadEntities() {
     }
 }
 
-loadEntities();
+if (process.argv.length > 2 && process.argv[2] == 'update') {
+    console.log('updating entities');
+    loadEntities()
+}
