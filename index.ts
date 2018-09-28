@@ -6,14 +6,12 @@ import {CollectionReference, QuerySnapshot, QueryDocumentSnapshot, DocumentData,
 export class MetricResponse {
     db: Firestore;
     reference: CollectionReference;
-    constructor() {
-        this.db = firestore();
+    constructor(fs : Firestore) {
+        this.db = fs;
         this.reference = this.db.collection(process.env.GOOGLE_FACTS_TABLENAME || "facts");
     }
 
     async getMetricResponse(metric : string): Promise<string> {
-        console.log("querying", metric);
-
         // Initial Response
         let result = `I don't recognize the metric, ${metric}`;
 
@@ -23,7 +21,10 @@ export class MetricResponse {
             results.forEach((doc : QueryDocumentSnapshot) => {
                 const data: DocumentData = doc.data();
                 if (data && data.response) {
-                    result = doc.data().response.replace(/{total_count}/gi, doc.data().total_count);
+                    result = doc.data().response;
+                    if (data.total_count) {
+                        result = result.replace(/{total_count}/gi, doc.data().total_count);
+                    }
                 } else {
                     result = `no result is available for ${metric}`;
                 }
@@ -35,7 +36,6 @@ export class MetricResponse {
     }
 
     async getResponse(intent : string, parameters? : Parameters): Promise<string> {
-        console.log("intent", intent);
         let response = `I do not recognize ${intent}`;
         switch (intent) {
             case "Default Welcome Intent":
@@ -45,7 +45,7 @@ export class MetricResponse {
                 if (parameters && parameters.metrics) {
                     const metric: string = String(parameters.metrics);
                     try {
-                        response = await new MetricResponse().getMetricResponse(metric);
+                        response = await this.getMetricResponse(metric);
                     } catch (e) {
                         console.log("ERROR", e);
                         response = "an unknown error occured. Please try again";
@@ -60,8 +60,9 @@ export class MetricResponse {
 const app = dialogflow({debug: true});
 initializeApp(config().firebase);
 app.fallback(async function (conv : DialogflowConversation) {
+    const fs = firestore();
     try {
-        conv.ask(await new MetricResponse().getResponse(conv.intent, conv.parameters));
+        conv.ask(await new MetricResponse(fs).getResponse(conv.intent, conv.parameters));
     } catch (e) {
         console.log("ERROR", e);
         conv.ask("an unknown error occured. Please try again");
