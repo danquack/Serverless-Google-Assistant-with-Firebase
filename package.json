@@ -32,7 +32,7 @@
     "mocha": "^5.2.0",
     "serverless-google-cloudfunctions": "^2.0.0",
     "serverless-plugin-typescript": "^1.1.5",
-    "ts-node": "^7.0.1",
+    "ts-node": "^8.6.2",
     "typescript": "^3.0.3"
   }
 }
