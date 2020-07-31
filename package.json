@@ -29,7 +29,7 @@
     "@types/yamljs": "^0.2.30",
     "chai": "^4.1.2",
     "firebase-mock": "^2.2.10",
-    "mocha": "^5.2.0",
+    "mocha": "^8.1.0",
     "serverless-google-cloudfunctions": "^2.0.0",
     "serverless-plugin-typescript": "^1.1.5",
     "ts-node": "^7.0.1",
